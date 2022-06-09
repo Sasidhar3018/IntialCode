@@ -4,7 +4,7 @@ import java.text.NumberFormat;
 
 public class SystemInfo {
 
-    private static final int _1024 = 1024;
+//    private static final int 1024 = 1024;
 	private Runtime runtime = Runtime.getRuntime();
 
     public String info() {
@@ -16,6 +16,9 @@ public class SystemInfo {
         return sb.toString();
         
     }
+    
+
+    
 
 //    public long physicalMemorysize() {
 //    	return System.getTotalMemorySize();
@@ -44,21 +47,21 @@ public class SystemInfo {
     public String memInfo() {
         NumberFormat format = NumberFormat.getInstance();
         StringBuilder sb = new StringBuilder();
-        long maxMemory = runtime.maxMemory();
-        long allocatedMemory = runtime.totalMemory();
+ //       long maxMemory = runtime.maxMemory();
+ //       long allocatedMemory = runtime.totalMemory();
         long freeMemory = runtime.freeMemory();
         sb.append("Free memory: ");
-        sb.append(format.format(freeMemory / _1024) + " " + "KB");
+        sb.append(format.format(freeMemory));
        // System.out.println("\n");
         sb.append("<br/>");
         sb.append("Allocated memory: ");
-        sb.append(format.format(allocatedMemory / 1024)+ " " + "KB");
+        sb.append(toGB(runtime.totalMemory()));
         sb.append("<br/>");
         sb.append("Max memory: ");
-        sb.append(format.format(maxMemory / 1024)+ " " + "KB");
+        sb.append(toGB(runtime.maxMemory()));
         sb.append("<br/>");
         sb.append("Total free memory: ");
-        sb.append(format.format((freeMemory + (maxMemory - allocatedMemory)) / 1024)+ " " + "KB");
+        sb.append(toGB(runtime.freeMemory()) + (toGB(runtime.maxMemory()) - toGB(runtime.totalMemory())));
         sb.append("<br/>");
         return sb.toString();  
 
@@ -85,6 +88,7 @@ public class SystemInfo {
         /* Get a list of all filesystem roots on this system */
         File[] roots = File.listRoots();
         StringBuilder sb = new StringBuilder();
+        //long Total_available_space = root.getTotalSpace();
         System.out.println("\n");
 
         /* For each filesystem root, print some info */
@@ -92,16 +96,21 @@ public class SystemInfo {
             sb.append("File system root: ");
             sb.append(root.getAbsolutePath());
             sb.append("<br/>");
-            sb.append("Total space (bytes): ");
-            sb.append(root.getTotalSpace());
+            sb.append("Total space (GB): ");
+            sb.append(toGB(root.getTotalSpace()));
             sb.append("<br/>");
-            sb.append("Free space (bytes): ");
-            sb.append(root.getFreeSpace());
+            sb.append("Free space (GB): ");
+            sb.append(toGB(root.getFreeSpace()));
             sb.append("<br/>");
-            sb.append("Usable space (bytes): ");
-            sb.append(root.getUsableSpace());
+            sb.append("Usable space (GB): ");
+            sb.append(toGB(root.getUsableSpace()));
             sb.append("<br/>");
         }
         return sb.toString();
+    }
+    
+    
+    private long toGB(long bytes) {
+    	return bytes/(1024 * 1024 * 1024);
     }
 }

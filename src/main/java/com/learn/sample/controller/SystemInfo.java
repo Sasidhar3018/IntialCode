@@ -1,6 +1,8 @@
 package com.learn.sample.controller;
 import java.io.File;
 import java.text.NumberFormat;
+import oshi.*;
+
 
 public class SystemInfo {
 
@@ -50,18 +52,22 @@ public class SystemInfo {
  //       long maxMemory = runtime.maxMemory();
  //       long allocatedMemory = runtime.totalMemory();
         long freeMemory = runtime.freeMemory();
-        sb.append("Free memory: ");
-        sb.append(format.format(freeMemory));
+        sb.append("\r\n" + "RAM Allocated to Java:");
+        sb.append(toMB(freeMemory));
+        sb.append("MB ");
        // System.out.println("\n");
         sb.append("<br/>");
         sb.append("Allocated memory: ");
-        sb.append(toGB(runtime.totalMemory()));
+        sb.append(toMB(runtime.totalMemory()));
+        sb.append("MB");
         sb.append("<br/>");
         sb.append("Max memory: ");
-        sb.append(toGB(runtime.maxMemory()));
+        sb.append(toMB(runtime.maxMemory()));
+        sb.append("MB");
         sb.append("<br/>");
         sb.append("Total free memory: ");
-        sb.append(toGB(runtime.freeMemory()) + (toGB(runtime.maxMemory()) - toGB(runtime.totalMemory())));
+        sb.append(toMB(runtime.freeMemory()) + (toGB(runtime.maxMemory()) - toGB(runtime.totalMemory())));
+        sb.append("MB");
         sb.append("<br/>");
         return sb.toString();  
 
@@ -84,6 +90,12 @@ public class SystemInfo {
         return sb.toString();
     }
 
+//   public String used() {
+//	   used memory = new used();
+//	   HardwareAbstractionLayer hardware = used.getHardware();
+//    GlobalMemory globalMemory = hardware.getMemory();
+//   }
+
     public String diskInfo() {
         /* Get a list of all filesystem roots on this system */
         File[] roots = File.listRoots();
@@ -96,21 +108,40 @@ public class SystemInfo {
             sb.append("File system root: ");
             sb.append(root.getAbsolutePath());
             sb.append("<br/>");
-            sb.append("Total space (GB): ");
+            sb.append("Total space: ");
             sb.append(toGB(root.getTotalSpace()));
+            sb.append(" GB");
             sb.append("<br/>");
-            sb.append("Free space (GB): ");
+            sb.append("Free space: ");
             sb.append(toGB(root.getFreeSpace()));
+            sb.append(" GB");
             sb.append("<br/>");
-            sb.append("Usable space (GB): ");
+            sb.append("Usable space: ");
             sb.append(toGB(root.getUsableSpace()));
+            sb.append(" GB");
             sb.append("<br/>");
         }
         return sb.toString();
     }
     
+//    public String Eventlog(String log) {
+//    	EventLogIterator iter = new EventLogIterator("Application");         
+//    	while(iter.hasNext()) { 
+//    	    EventLogRecord record = iter.next(); 
+//    	    System.out.println(record.getRecordNumber() 
+//    	             + ": Event ID: " + record.getEventId() 
+//    	            + ", Event Type: " + record.getType() 
+//    	            + ", Event Source: " + record.getSource()); 
+//    	} 
+//    }
+    
     
     private long toGB(long bytes) {
-    	return bytes/(1024 * 1024 * 1024);
+    	return bytes/(1024 * 1024 * 1024 );
+    }
+    
+    private long toMB(long bytes) {
+    	return bytes/(1024*1024);
+    
     }
 }

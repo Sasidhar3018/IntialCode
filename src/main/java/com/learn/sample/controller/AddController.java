@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 //import java.net.*;
 
@@ -16,10 +17,13 @@ public class AddController {
 
 	
 	@GetMapping("/systeminfo")
-	String hello() {
+	String hello() throws Exception {
+		InetAddress inetAddress = InetAddress.getLocalHost();
+	
+		String ipAddress = inetAddress.getHostAddress();
+		System.out.println("\n");
+		System.out.println("IP address: " + ipAddress);
 		String timeStamp = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss").format(Calendar.getInstance().getTime());
-
-
 
 		System.out.println("\n");
 		System.out.println(timeStamp);
@@ -32,11 +36,11 @@ public class AddController {
 		}
 		System.out.println("\n");
 
-		System.out.println("Os Total Memory: " + systemInfo.totalMem() / 1024.0 + " KB");
-		System.out.println("\n");
-
-		System.out.println("Os Used Memory: " + systemInfo.usedMem()/ 1024.0 + " KB");
-		System.out.println("\n");
+//		System.out.println("Os Total Memory: " + systemInfo.totalMem() / 1024.0 + " KB");
+//		System.out.println("\n");
+//
+//		System.out.println("Os Used Memory: " + systemInfo.usedMem()/ 1024.0 + " KB");
+//		System.out.println("\n");
 
 		
 		System.out.println("OS Version" + systemInfo.osVersion());
